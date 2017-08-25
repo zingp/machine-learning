@@ -62,6 +62,11 @@ class TTest(object):
         b = w * math.sqrt(1 / self.n1 + 1 / self.n2)
         return abs(a / b)
 
+    def get_r(self):
+        """效应量"""
+        t = self.get_t()
+        return t**2 / (t**2 + self.n1 - 1)
+
 
 if __name__ == '__main__':
 
@@ -90,6 +95,7 @@ if __name__ == '__main__':
     print("X方差：", s1)
     print("Y方差：", s2)
     print("t:", obj_t.get_t())
+    print("r:", obj_t.get_r())
 
 
 """
@@ -98,4 +104,5 @@ Y平均： 22.01591666666667
 X方差： 12.141152859375003
 Y方差： 22.05293382638889
 t: 6.672745133475093
+r: 0.6593880742304228
 """
