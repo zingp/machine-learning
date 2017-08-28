@@ -1,12 +1,12 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-# Author: "Zing-p"
+# Author: "LiuYouYuan"
 # Date: 2017/8/23
 
 import math
 
-class ArrayAbc(object):
-
+class SampleInfo(object):
+    """计算样本基本统计量"""
     def __init__(self, array):
         self.array = [float(i) for i in array]
         self.count = self.count()
@@ -14,10 +14,15 @@ class ArrayAbc(object):
         self.avg = self.average()
 
     def count(self):
+        """求样本量"""
         return len(self.array)
 
+    def f(self):
+        """自由度"""
+        return self.count - 1
+
     def average(self):
-        """求平均数"""
+        """求样本平均数"""
         if self.count < 1:
             return 0
         else:
@@ -32,41 +37,47 @@ class ArrayAbc(object):
             return self.array[len(self.array) // 2]
 
     def variance(self):
-        """求方差"""
+        """求样本方差"""
         if self.count < 1:
             return None
         else:
             li = [(k-self.avg)**2 for k in self.array]
             s = sum(li)
-            return s / self.count
+            return s / (self.count - 1)
+
+    def standard_dev(self):
+        """求样本标准差"""
+        return math.sqrt(self.variance())
 
 
-class TTest(object):
-    """两个正太总体均值差的检验（t检验）。"""
-    def __init__(self, n1, n2, x, y, s1, s2):
-        self.n1 = float(n1)
-        self.s1 = float(s1)
-        self.x = float(x)
-        self.y = float(y)
-        self.n2 = float(n2)
-        self.s2 = float(s2)
+class DiffArrayInfo(object):
+    """获得样本差值序列"""
+    def __init__(self, a, b):
+        self.a = [i for i in a]
+        self.b = [i for i in b]
+        self.array = self.get_diff_array()
 
-    def get_sw(self):
-        ss = (self.n1 - 1) * self.s1 + (self.n2 - 1) * self.s2
-        ss_avg = ss / (self.n1 + self.n2 - 2)
-        return math.sqrt(ss_avg)
+    def get_diff_array(self):
+        """返回样本差值序列"""
+        array = list()
+        if len(self.a) == len(self.b):
+            array = [self.a[i] - self.b[i] for i in range(len(self.a))]
+        return array
 
-    def get_t(self):
-        a = self.x - self.y
-        w = self.get_sw()
-        b = w * math.sqrt(1 / self.n1 + 1 / self.n2)
-        return abs(a / b)
 
-    def get_r(self):
-        """效应量"""
-        t = self.get_t()
-        return t**2 / (t**2 + self.n1 - 1)
+def get_t(u_d, s_d, n):
+    """
+    计算双边t检验的统计量t；
+    u_d:样本差值的均值；
+    s_d:样本差值的标准差；
+    n:样本量
+    return:t值
+    """
+    return float(u_d) / (float(s_d) / math.sqrt(n))
 
+def get_r(t, f):
+    r = t**2 / (t**2 + f)
+    return r
 
 if __name__ == '__main__':
 
@@ -79,32 +90,25 @@ if __name__ == '__main__':
         17.51, 20.33, 35.255, 22.158, 25.139, 20.429, 17.425, 34.288, 23.894, 17.96, 22.058, 21.157,
     ]
 
-    obj_a = ArrayAbc(Congruent)
-    obj_b = ArrayAbc(In_congruent)
+    obj_a = SampleInfo(Congruent)
+    obj_b = SampleInfo(In_congruent)
+    obj_diff = DiffArrayInfo(In_congruent, Congruent)
+    obj_c = SampleInfo(obj_diff.array)
 
-    n1 = obj_a.count
-    n2 = obj_b.count
-    x = obj_a.avg
-    y = obj_b.avg
-    s1 = obj_a.variance()
-    s2 = obj_b.variance()
+    s3 = obj_c.standard_dev()
+    t_val = get_t(obj_c.avg, s3, obj_c.count)
+    r_val = get_r(t_val, obj_c.f())
 
-    obj_t = TTest(n1, n2, x, y, s1, s2)
-    print("X平均：", x)
-    print("Y平均：", y)
-    print("均值差值：", y-x)
-    print("X方差：", s1)
-    print("Y方差：", s2)
-    print("t统计值:", obj_t.get_t())
-    print("效应量r:", obj_t.get_r())
-
+    print("一致条件的样本的标准差：", obj_a.standard_dev())
+    print("不一致条件的样本的标准差：", obj_b.standard_dev())
+    print("样本差值的标准差:Sd = ", s3)
+    print("t 统计量：t = ", t_val)
+    print("r_2 效应量：r = ", r_val)
 
 """
-X平均： 14.051125
-Y平均： 22.01591666666667
-均值差值： 7.9647916666666685
-X方差： 12.141152859375003
-Y方差： 22.05293382638889
-t统计值: 6.672745133475093
-效应量r: 0.6593880742304228
+一致条件的样本的标准差： 3.5593579576451955
+不一致条件的样本的标准差： 4.797057122469138
+样本差值的标准差:Sd =  4.864826910359054
+t 统计量：t =  8.020706944109957
+r_2 效应量：r =  0.736636416144506
 """
