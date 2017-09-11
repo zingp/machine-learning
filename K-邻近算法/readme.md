@@ -12,3 +12,5 @@
      空间复杂度高
 #### 适用范围
     - 数值型和标称型
+#### 归一化公式
+    new_value = (old_value -min)/(max -min)
