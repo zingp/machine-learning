@@ -22,6 +22,7 @@ def create_data_set():
     return groups, labels
 
 def kClass(point, data_set, labels, k):
+    """判断新输入的点属于哪个分类。"""
 
     # 计算距离
     data_set_size = data_set.shape[0]
