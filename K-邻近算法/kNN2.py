@@ -4,7 +4,6 @@
 # Date: 2017/9/11
 
 import numpy as np
-import matplotlib
 import matplotlib.pyplot as plt
 
 def file_to_matrix(filename):
