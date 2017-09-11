@@ -21,8 +21,6 @@ def create_data_set():
     labels = ["A", "A", "B", "B"]
     return groups, labels
 
-
-group, label = create_data_set()
 def kClass(point, data_set, labels, k):
 
     # 计算距离
@@ -43,6 +41,8 @@ def kClass(point, data_set, labels, k):
     sort_class_count = sorted(class_count.items(), key=operator.itemgetter(1), reverse=True)
     return sort_class_count[0][0]
 
+
+group, label = create_data_set()
 print(kClass([0.2, 0.2], group, label, 2))
 
 
