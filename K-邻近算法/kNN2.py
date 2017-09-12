@@ -8,6 +8,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+from kNN import k_class
 
 def file_to_matrix(filename):
     """将文件中的数据转换为数组和分类标签"""
@@ -38,7 +39,7 @@ def scatter_plot(data, label):
 
 def auto_norm(data):
     """数据归一化函数"""
-    min_val = data.min(0)    # 0 应该是按照列计算
+    min_val = data.min(0)    # 0 应该是按照"列"计算
     max_val = data.max(0)
 
     ranges = max_val - min_val
@@ -47,11 +48,37 @@ def auto_norm(data):
     norm_data_set = data - np.tile(min_val, (m, 1))
     norm_data_set = norm_data_set / np.tile(ranges, (m, 1))
 
-    return norm_data_set
+    return norm_data_set, ranges, min_val
 
-data_set, data_label = file_to_matrix("data_set2.txt")
-norm_data = auto_norm(data_set)         # 归一化之前的散点图可视化
-scatter_plot(data_set, data_label)
-scatter_plot(norm_data, data_label)     # 归一化之后的散点图可视化
+
+def error_rate_test():
+    """
+    测试分类算法的错误率，通常0.9的数据作为训练样本，0.1的数据作为测试。
+    """
+
+    test_ratio = 0.10   # 测试比值，测试数据占所有数据的比值
+    data_set, data_label = file_to_matrix("data_set2.txt")
+    norm_set, ranges, min_val = auto_norm(data_set)
+    m = norm_set.shape[0]
+    test_vector_num = int(m*test_ratio)       # 测试数据的大小
+
+    error_count = 0.0
+    for i in range(test_vector_num):
+        result = k_class(norm_set[i, :], norm_set[test_vector_num: m, :],
+                         data_label[test_vector_num: m], 4)
+        if result != data_label[i]:
+            print("Test result is:{}, real answer is: {}".format(result, data_label[i]))
+            error_count += 1.0
+    print("The error rate is: %f" % (error_count / float(test_vector_num)))
+
+
+if __name__ == '__main__':
+
+    # data_set, data_label = file_to_matrix("data_set2.txt")
+    # norm_data = auto_norm(data_set)         # 归一化之前的散点图可视化
+    # scatter_plot(data_set, data_label)
+    # scatter_plot(norm_data, data_label)     # 归一化之后的散点图可视化
+
+    error_rate_test()
 
 

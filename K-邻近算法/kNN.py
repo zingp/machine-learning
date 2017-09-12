@@ -21,7 +21,7 @@ def create_data_set():
     labels = ["A", "A", "B", "B"]
     return groups, labels
 
-def kClass(point, data_set, labels, k):
+def k_class(point, data_set, labels, k):
     """判断新输入的点属于哪个分类。"""
 
     # 计算距离
@@ -43,7 +43,9 @@ def kClass(point, data_set, labels, k):
     return sort_class_count[0][0]
 
 
-group, label = create_data_set()
-print(kClass([0.2, 0.2], group, label, 2))
+if __name__ == '__main__':
+
+    group, label = create_data_set()
+    print(k_class([0.2, 0.2], group, label, 2))
 
 
