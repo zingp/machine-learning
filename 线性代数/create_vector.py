@@ -133,9 +133,9 @@ class Vector(object):
         except Exception as e:
             msg = str(e)
             if msg == 'need more than 2 values to unpack':
-                self_embedded_in_R3 = Vector(self.coordinates + ('0',))
-                v_embedded_in_R3 = Vector(v.coordinates + ('0',))
-                return self_embedded_in_R3.cross(v_embedded_in_R3)
+                self_embedded_in_r3 = Vector(self.coordinates + ('0',))
+                v_embedded_in_r3 = Vector(v.coordinates + ('0',))
+                return self_embedded_in_r3.cross(v_embedded_in_r3)
             elif (msg == 'too many values to unpack' or
                 msg == 'need more than 1 values to unpack'):
                 raise Exception(self.ONLY_DEFINED_IN_TWO_THREE_DIMS_MSG)
