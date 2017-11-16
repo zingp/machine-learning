@@ -12,6 +12,7 @@ getcontext().prec = 30
 class Vector(object):
 
     CANNOT_NORMALIZE_ZERO_VECTOR_MSG = 'Cannot normalize the zero vector'
+    ONLY_DEFINED_IN_TWO_THREE_DIMS_MSG = 'Only defined in two three dims'
 
     def __init__(self, coordinates):
         try:
@@ -55,6 +56,41 @@ class Vector(object):
         except ZeroDivisionError:
             raise Exception(self.CANNOT_NORMALIZE_ZERO_VECTOR_MSG)
 
+    def is_orthogonal_to(self, v, tolerance=1e-10):
+        # tolerance 容差，偏差；orthogonal 直角的
+        res = self.dot(v)
+        return res < tolerance
+
+    def is_parallel_to(self, v):
+        """是否平行；parallel 平行的"""
+        return (self.is_zero() or v.is_zero() or self.angle_with(v) == 0 or
+                self.angle_with(v) == math.pi)
+
+    def is_zero(self, tolerance=1e-10):
+        return self.magnitude() < tolerance
+
+    def component_orthogonal_to(self, basis):
+        try:
+            projection = self.component_parallel_to(basis)
+            return self.minus(projection)
+        except Exception as e:
+            if str(e) == self.CANNOT_NORMALIZE_ZERO_VECTOR_MSG:
+                raise Exception(self.CANNOT_NORMALIZE_ZERO_VECTOR_MSG)
+            else:
+                raise e
+
+    def component_parallel_to(self, basis):
+        """求投影向量"""
+        try:
+            u = basis.normalized()
+            weight = self.dot(u)
+            return u.times_scalar(weight)
+        except Exception as e:
+            if str(e) == self.CANNOT_NORMALIZE_ZERO_VECTOR_MSG:
+                raise Exception(self.CANNOT_NORMALIZE_ZERO_VECTOR_MSG)
+            else:
+                raise e
+
     def dot(self, v):
         """点积"""
         square_list = [x*y for x, y in zip(self.coordinates, v.coordinates)]
@@ -75,6 +111,34 @@ class Vector(object):
         except Exception as e:
             if str(e) == self.CANNOT_NORMALIZE_ZERO_VECTOR_MSG:
                 raise Exception('Cannot product an angle with the zero vector')
+            else:
+                raise e
+
+    def area_of_triangle_with(self, v):
+        return self.area_of_parallelogram_with(v) /Decimal('2.0')
+
+    def area_of_parallelogram_with(self, v):
+        cross_product = self.cross(v)
+        return cross_product.magnitude()
+
+    def cross(self, v):
+        """向量积"""
+        try:
+            x_1, y_1, z_1 = self.coordinates
+            x_2, y_2, z_2 = v.coordinates
+            new_coordinates = [y_1*z_2 - y_2*z_1,
+                               -(x_1*z_2 - x_2*z_1),
+                               x_1*y_2 - x_2*y_1]
+            return Vector(new_coordinates)
+        except Exception as e:
+            msg = str(e)
+            if msg == 'need more than 2 values to unpack':
+                self_embedded_in_R3 = Vector(self.coordinates + ('0',))
+                v_embedded_in_R3 = Vector(v.coordinates + ('0',))
+                return self_embedded_in_R3.cross(v_embedded_in_R3)
+            elif (msg == 'too many values to unpack' or
+                msg == 'need more than 1 values to unpack'):
+                raise Exception(self.ONLY_DEFINED_IN_TWO_THREE_DIMS_MSG)
             else:
                 raise e
 
@@ -135,4 +199,9 @@ if __name__ == '__main__':
     v = Vector([7.35, 0.221, 5.188])
     w = Vector([2.751, 8.259, 3.985])
     print("v w 夹角 度数：", v.angle_with(w, in_degrees=True))
+
+    # 测试投影向量
+    v = Vector([3.039, 1.879])
+    b = Vector([0.825, 2.036])
+    print("投影proj(b)(v)=", v.component_parallel_to(b))
 
