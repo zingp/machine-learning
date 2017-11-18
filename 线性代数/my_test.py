@@ -18,5 +18,4 @@ from decimal import Decimal, getcontext
 getcontext().prec = 30
 
 
-t = Decimal(1.0)
-print(type(t))
+print(['0']*2)
