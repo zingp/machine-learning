@@ -3,4 +3,162 @@
 # Author: "Zing-p"
 # Date: 2017/11/20
 
+B = [[1.12366,2,3,5],
+     [2,3.325423,3,5],
+     [1,2,5.666611,1]]
+A = [[1,2,3],
+     [4,5,6]]
+def shape(M):
+    if len(M) == 0:
+        return 0,0
+    else:
+        return len(M),len(M[0])
+
+def matxRound(M, decPts=4):
+    if len(M) == 0:
+        pass
+    else:
+        num_row,num_clo = shape(M)
+        for r in range(num_row):
+            for c in range(num_clo):
+                M[r][c] = round(M[r][c], decPts)
+
+# 计算矩阵的转置
+def transpose(M):
+    if len(M) == 0:
+        return M
+    else:
+        Mt = []
+        num_row, num_clo = shape(M)
+        for x in range(num_clo):
+            Mt.append([])
+            for y in range(num_row):
+                Mt[x].append(0)
+        for x in range(num_row):
+            for y in range(num_clo):
+                Mt[y][x] = M[x][y]
+        return Mt
+
+# 计算矩阵乘法 AB，如果无法相乘则raise ValueError
+def matxMultiply(A, B):
+    row_a, clo_a = shape(A)
+    row_b, clo_b = shape(B)
+    if clo_a == row_b:
+        res = []
+        for i in range(row_a):
+            res.append([])
+            for j in range(clo_b):
+                ele_sum = 0
+                for s in range(clo_a):
+                    ele_sum += A[i][s]*B[s][j]
+                res[i].append(ele_sum)
+        return res
+    else:
+        raise ValueError
+
+# 构造增广矩阵，假设A，b行数相同
+def augmentMatrix(A, b):
+    if len(A) != len(b):
+        raise ValueError
+    else:
+        augment_mat = []
+        for r in range(shape(A)[0]):
+            augment_mat.append([])
+            for c in range(shape(A)[1]):
+                augment_mat[r].append(A[r][c])
+            augment_mat[r].append(b[r][0])
+        return augment_mat
+
+# r1 <---> r2
+# 直接修改参数矩阵，无返回值
+def swapRows(M, r1, r2):
+    if (0 <= r1 < len(M)) and (0 <= r2 < len(M)):
+        M[r1], M[r2] = M[r2], M[r1]
+    else:
+        raise IndexError('list index out of range')
+
+# r1 <--- r1 * scale
+# scale为0是非法输入，要求 raise ValueError
+# 直接修改参数矩阵，无返回值
+def scaleRow(M, r, scale):
+    if not scale:
+        raise ValueError('The parameter scale can not be zero')
+    else:
+        M[r] = [scale*i for i in M[r]]
+
+# r1 <--- r1 + r2*scale
+# 直接修改参数矩阵，无返回值
+def addScaledRow(M, r1, r2, scale):
+    if not scale:
+        raise ValueError
+    if (0 <= r1 < len(M)) and (0 <= r2 < len(M)):
+        M[r1] = [M[r1][i] + scale * M[r2][i] for i in range(len(M[r2]))]
+    else:
+        raise IndexError('list index out of range')
+
+# N = transpose(A)
+# print(N)
+# matxRound(B)
+# print(B)
+A = [
+    [7, 5, 3, -5],
+    [-4, 6, 2, -2],
+    [-9, 4, -5, 9],
+    [-9, -10, 5, -4],
+ ]
+def gj_Solve(A, b, decPts=4, epsilon=1.0e-16):
+    if len(A) != len(b):
+        return None
+    elif len(A) != len(A[0]):
+        raise ValueError
+    else:
+        Ab = augmentMatrix(A, b)
+        matxRound(Ab, decPts)
+        num_row, num_clo = shape(Ab)
+        for c in range(num_clo-1):
+            current_max = abs(Ab[c][c])
+            current_row = c
+            for r in range(c, num_row):
+                if abs(Ab[r][c]) > current_max:
+                    current_max = abs(Ab[c][r])
+                    current_row = r
+            if current_max == 0:
+                print('奇异矩阵')
+                return None
+            else:
+                swapRows(Ab, c, current_row)
+                while abs((Ab[c][c]-1.0)) >= epsilon:
+                    scaleRow(Ab, c, 1.0 / Ab[c][c])
+                # for j in range(c):
+                #     while abs(Ab[j][c]) >= epsilon:
+                #         addScaledRow(Ab, j, c, -Ab[j][c])
+                for j in range(c + 1, num_row):
+                    while abs(Ab[j][c]) >= epsilon:
+                        addScaledRow(Ab, j, c, -Ab[j][c])
+        X = []
+        for row in range(num_row):
+            X.append([Ab[row][-1]])
+        return X
+
+X = [
+    [1,0,3,-1],
+    [2,1,0,2]
+]
+Y = [
+    [4,1,0],
+    [-1,1,3],
+    [2,0,1],
+    [1,3,4]
+]
+b = [[1],[1],[1],[1]]
+print(gj_Solve(A, b))
+# r = matxMultiply(X,Y)
+# print(r)
+# print(augmentMatrix(Y,b))
+# # swapRows(Y,0,1)
+# # print(Y)
+# scaleRow(Y, 0, 2)
+# print(Y)
+
+
 

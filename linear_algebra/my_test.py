@@ -13,9 +13,14 @@ b = [4, 5, 6, ]
 # print(reduce(lambda x, y: x+y, [i**2 for i in a]))
 
 
-from decimal import Decimal, getcontext
+# from decimal import Decimal, getcontext
+#
+# getcontext().prec = 30
+#
+#
+# print(['0']*2)
 
-getcontext().prec = 30
-
-
-print(['0']*2)
+# for i in range(2, 9):
+#     print(i)
+for i in [range(0, 5),range(5,10)]:
+    print(i)
