@@ -19,8 +19,7 @@ b = [4, 5, 6, ]
 #
 #
 # print(['0']*2)
-
-# for i in range(2, 9):
-#     print(i)
-for i in [range(0, 5),range(5,10)]:
+for i in range(5):
+    print(i)
+for i in range(6,10):
     print(i)
