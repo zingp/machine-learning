@@ -113,22 +113,16 @@ def gj_Solve(A, b, decPts=4, epsilon=1.0e-16):
         raise ValueError
     else:
         Ab = augmentMatrix(A, b)
-        print("start---->", Ab)
         matxRound(Ab, decPts)
         num_row, num_clo = shape(Ab)
         for c in range(num_clo-1):
-            current_max = abs(Ab[c][c])
-            print("初始值", current_max,c)
+            current_max = 0.0
             current_row = c
             for r in range(c, num_row):
                 if abs(Ab[r][c]) > current_max:
-                    print("{}---{}".format(abs(Ab[r][c]), current_max))
                     current_max = abs(Ab[r][c])
                     current_row = r
-                    print(current_max)
-            if current_max == 0:
-                print("----",Ab)
-                print(current_max,current_row,c)
+            if current_max < epsilon:
                 return None
             else:
                 swapRows(Ab, c, current_row)
@@ -143,7 +137,6 @@ def gj_Solve(A, b, decPts=4, epsilon=1.0e-16):
         res = []
         for row in range(num_row):
             res.append([Ab[row][-1]])
-        print("结果：",res)
         return res
 
 A = [
