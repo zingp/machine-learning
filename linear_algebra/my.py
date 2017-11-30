@@ -3,19 +3,19 @@
 # Author: "Zing-p"
 # Date: 2017/11/20
 
-B = [[1.12366,2,3,5],
-     [2,3.325423,3,5],
-     [1,2,5.666611,1]]
-A = [[1,2,3],
-     [4,5,6]]
 def shape(M):
+    """返回矩阵的行列"""
     if len(M) == 0:
-        return 0,0
+        return 0, 0
     else:
-        return len(M),len(M[0])
+        if M[0] is not list:
+            return len(M), 1
+        else:
+            return len(M), len(M[0])
+
 
 def matxRound(M, decPts=4):
-    if len(M) == 0:
+    if not len(M):
         pass
     else:
         num_row,num_clo = shape(M)
@@ -39,10 +39,17 @@ def transpose(M):
                 Mt[y][x] = M[x][y]
         return Mt
 
+def one_row_to_clo(M):
+    ret = []
+    for i in M:
+        ret.append([i])
+    return ret
 # 计算矩阵乘法 AB，如果无法相乘则raise ValueError
 def matxMultiply(A, B):
     row_a, clo_a = shape(A)
     row_b, clo_b = shape(B)
+    if clo_b == 1:
+        B = one_row_to_clo(B)
     if clo_a == row_b:
         res = []
         for i in range(row_a):
@@ -55,6 +62,8 @@ def matxMultiply(A, B):
         return res
     else:
         raise ValueError
+
+# m, b = linearRegression(X, Y)
 
 # 构造增广矩阵，假设A，b行数相同
 def augmentMatrix(A, b):
@@ -96,16 +105,32 @@ def addScaledRow(M, r1, r2, scale):
     else:
         raise IndexError('list index out of range')
 
-# N = transpose(A)
-# print(N)
-# matxRound(B)
-# print(B)
+ # 7,   5,   3,  -5 ||  1
+ #  -4,   6,   2,  -2 ||  1
+ #  -9,   4,  -5,   9 ||  1
+ #  -9, -10,   5,  -4 ||  1
 A = [
-    [7, 5, 3, -5],
-    [-4, 6, 2, -2],
-    [-9, 4, -5, 9],
-    [-9, -10, 5, -4],
- ]
+    [7,   5,   3,  -5],
+    [-4,   6,   2,  -2],
+    [-9,   4,  -5,   9],
+    [-9, -10,   5,  -4]
+]
+b = [
+    [1],
+    [1],
+    [1],
+    [1]]
+from fractions import Fraction
+def to_fraction(M):
+    for i in range(len(M)):
+        for j in range(len(M[i])):
+            M[i][j] = Fraction(float(M[i][j]))
+
+# to_fraction(A)
+# to_fraction(b)
+# print(A)
+# print(b)
+
 def gj_Solve(A, b, decPts=4, epsilon=1.0e-16):
     if len(A) != len(b):
         raise ValueError
@@ -138,27 +163,35 @@ def gj_Solve(A, b, decPts=4, epsilon=1.0e-16):
         for row in range(num_row):
             res.append([Ab[row][-1]])
         return res
+print(gj_Solve(A,b))
 
-A = [
-    [-2, -8, 9, -1, -1, -4, -6, -2, 0],
-    [-2, 9, -2, -9, 2, -1, 7, 6, 1],
-    [-2, 2, 9, -1, -4, 4, -5, -10, 6],
-    [-3, 0, -4, -5, -9, 0, -10, 2, 5],
-    [-4, 9, -9, 1, -2, 4, 2, 0, 0],
-    [8, 4, 2, -4, 2, -4, -8, -9, 4],
-    [4, -10, 1, -9, -4, 3, 1, 7, 7],
-    [-7, 7, 5, -6, 2, -9, 1, -2, -6],
-    [-4, -3, 6, 2, -10, 0, -9, -8, 6]]
+def calculateMSE(X,Y,m,b):
+    if len(X) == len(Y) and len(X) != 0:
+        n = len(X)
+        square_li = [(Y[i]-m*X[i]-b)**2 for i in range(n)]
+        return sum(square_li) / float(n)
+    else:
+        raise ValueError
 
-b = [[0],[1],[2],[3],[4],[5],[6],[7],[8]]
-print(gj_Solve(A, b))
-# r = matxMultiply(X,Y)
-# print(r)
-# print(augmentMatrix(Y,b))
-# # swapRows(Y,0,1)
-# # print(Y)
-# scaleRow(Y, 0, 2)
-# print(Y)
+
+def linearRegression(X, Y):
+    mX = []
+    for i in X:
+        m = [i, 1]
+        mX.append(m)
+    X = mX
+
+    y = []
+    for i in Y:
+        n = [i]
+        y.append(n)
+    Y = y
+    XT = transpose(X)
+    A = matxMultiply(XT, X)
+    b = matxMultiply(XT, Y)
+    ret = gj_Solve(A, b)
+    return ret[0][0], ret[1][0]
+
 
 
 

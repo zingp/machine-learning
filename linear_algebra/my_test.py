@@ -5,8 +5,8 @@
 
 import math
 from functools import reduce
-a = [1, 2, 3, ]
-b = [4, 5, 6, ]
+# a = [1, 2, 3, ]
+# b = [4, 5, 6, ]
 # for x, y in zip(a, b):
 #     print(x, y)
 # print(math.sqrt(9.9))
@@ -19,7 +19,16 @@ b = [4, 5, 6, ]
 #
 #
 # print(['0']*2)
-for i in range(5):
-    print(i)
-for i in range(6,10):
-    print(i)
+# for i in range(5):
+#     print(i)
+# for i in range(6,10):
+from fractions import Fraction
+# print(-107*623)
+print(-107*35)
+
+a = Fraction('-66661/152')
+b = Fraction(-384.0)
+print(a+b)
+c = Fraction('-3745/152')
+print(c+Fraction(181.0))
+print(Fraction('-125029/23767'))
