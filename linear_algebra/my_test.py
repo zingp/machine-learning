@@ -22,13 +22,22 @@ from functools import reduce
 # for i in range(5):
 #     print(i)
 # for i in range(6,10):
-from fractions import Fraction
-# print(-107*623)
-print(-107*35)
-
-a = Fraction('-66661/152')
-b = Fraction(-384.0)
-print(a+b)
-c = Fraction('-3745/152')
-print(c+Fraction(181.0))
-print(Fraction('-125029/23767'))
+# from fractions import Fraction
+# # print(-107*623)
+# print(-107*35)
+#
+# a = Fraction('-66661/152')
+# b = Fraction(-384.0)
+# print(a+b)
+# c = Fraction('-3745/152')
+# print(c+Fraction(181.0))
+# print(Fraction('-125029/23767'))
+M = [
+    [1, 2],
+    [3, 4]
+]
+def transpose(M):
+    return [list(col) for col in zip(*M)]
+print(*M)
+for i in zip(*M):
+    print(i,type(i))
