@@ -42,7 +42,7 @@ print(empty)
 
 # 创建连续数组
 a = np.arange(1, 14, 2)
-print(a)
+print("连续数组", a)
 
 # 改变数组形状
 b = np.arange(12).reshape((3, 4))
