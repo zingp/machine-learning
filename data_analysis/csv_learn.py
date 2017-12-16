@@ -5,12 +5,14 @@
 
 import csv
 
+#get csv data set
 def read_csv(filename):
     with open(filename, 'r') as f:
         reader = csv.DictReader(f)
         return list(reader)
 
 titanic_data = read_csv('titanic-data.csv')
+print(titanic_data)
 for i in range(len(titanic_data)):
     for k, v in titanic_data[i].items():
         print(k, v)
