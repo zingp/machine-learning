@@ -5,7 +5,7 @@
 
 import csv
 
-#get csv data set
+# get csv data set
 def read_csv(filename):
     with open(filename, 'r') as f:
         reader = csv.DictReader(f)

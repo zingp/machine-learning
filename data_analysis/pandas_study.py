@@ -32,7 +32,6 @@ if 0:
     df_2 = pd.DataFrame([[0, 1, 2], [3, 4, 5]], columns=['A', 'B', 'C'])
     print(df_2)
 
-
 # 访问DataFrame中的元素
 if 0:
     print(ridership_df.iloc[0])        # 访问第一行
@@ -78,7 +77,11 @@ def mean_riders_for_max_station(ridership):
 if 0:
     print(mean_riders_for_max_station(ridership_df))
 
-titanic_df = pd.read_csv("titanic-data.csv")
-# print(titanic_df.head())   # 打印前5行
-print(titanic_df.describe())  # 整体数据的统计信息，平均值，标准差等
+if 0:
+    titanic_df = pd.read_csv("titanic-data.csv")
+    print(titanic_df.head())  # 打印前5行
+    print(titanic_df.describe())  # 整体数据的统计信息，平均值，标准差等
+
+
+
 

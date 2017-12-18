@@ -6,11 +6,20 @@
 import math
 
 # 向上取整
-print("math.ceil---")
-print("math.ceil(2.3) => ", math.ceil(2.3))
-print("math.ceil(2.6) => ", math.ceil(2.6))
+# print("math.ceil---")
+# print("math.ceil(2.3) => ", math.ceil(2.3))
+# print("math.ceil(2.6) => ", math.ceil(2.6))
+#
+# # 向下取整
+# print("\nmath.floor---")
+# print("math.floor(2.3) => ", math.floor(2.3))
+# print("math.floor(2.6) => ", math.floor(2.6))
+dic = {"a":"b", "c":"d"}
+li = [1,2,3]
+# print(**dic)
 
-# 向下取整
-print("\nmath.floor---")
-print("math.floor(2.3) => ", math.floor(2.3))
-print("math.floor(2.6) => ", math.floor(2.6))
+a = [
+    "123",
+    #"456",
+]
+print(a)
