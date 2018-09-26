@@ -19,8 +19,9 @@ li = [
 
 # dtype是指定将矩阵中的元素转换成什么类型:float, int, str
 matrix = np.array(li, dtype=np.str)
-
 print("matrix:", matrix)
+print("matrix type:", type(matrix))   # <class 'numpy.ndarray'>  numpy的n维数组
+
 print("matrix 维度::", matrix.ndim)
 print("matrix 行列::", matrix.shape)
 print("matrix 元素个数::", matrix.size)
