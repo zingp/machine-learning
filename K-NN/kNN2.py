@@ -10,6 +10,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from kNN import k_class
 
+
 def file_to_matrix(filename):
     """将文件中的数据转换为数组和分类标签"""
     f = open(filename, "r")
@@ -34,8 +35,10 @@ def scatter_plot(data, label):
     """生成散点图来可视化数据"""
     fig = plt.figure()
     ax = fig.add_subplot(111)
-    ax.scatter(data[:, 0], data[:, 1], 15.0*np.array(label), 15.0*np.array(label))
+    ax.scatter(data[:, 0], data[:, 1], 15.0 *
+               np.array(label), 15.0*np.array(label))
     plt.show()
+
 
 def auto_norm(data):
     """数据归一化函数"""
@@ -67,7 +70,8 @@ def error_rate_test():
         result = k_class(norm_set[i, :], norm_set[test_vector_num: m, :],
                          data_label[test_vector_num: m], 4)
         if result != data_label[i]:
-            print("Test result is:{}, real answer is: {}".format(result, data_label[i]))
+            print("Test result is:{}, real answer is: {}".format(
+                result, data_label[i]))
             error_count += 1.0
     print("The error rate is: %f" % (error_count / float(test_vector_num)))
 
@@ -80,5 +84,3 @@ if __name__ == '__main__':
     # scatter_plot(norm_data, data_label)     # 归一化之后的散点图可视化
 
     error_rate_test()
-
-
