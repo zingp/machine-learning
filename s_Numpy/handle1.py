@@ -21,3 +21,7 @@ print(a * b)       # [ 2  6 12 20]
 print(a ** b)
 
 # 访问
+print(a[2])
+
+arr = np.arange(0, 30, 2)    # [0, 30),差值为2的等差数列 array
+print(arr)
