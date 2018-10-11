@@ -47,5 +47,3 @@ if __name__ == '__main__':
 
     group, label = create_data_set()
     print(k_class([0.2, 0.2], group, label, 2))
-
-

@@ -78,9 +78,9 @@ def error_rate_test():
 
 if __name__ == '__main__':
 
-    # data_set, data_label = file_to_matrix("data_set2.txt")
-    # norm_data = auto_norm(data_set)         # 归一化之前的散点图可视化
-    # scatter_plot(data_set, data_label)
-    # scatter_plot(norm_data, data_label)     # 归一化之后的散点图可视化
+    data_set, data_label = file_to_matrix("data_set2.txt")
+    norm_data = auto_norm(data_set)         # 归一化之前的散点图可视化
+    scatter_plot(data_set, data_label)
+    scatter_plot(norm_data, data_label)     # 归一化之后的散点图可视化
 
     error_rate_test()

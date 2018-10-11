@@ -4,10 +4,22 @@
 # Date: 2017/11/15
 
 from math import log
+# 首先明确data_set的数据结构
+'''
+dataset = [
+    [1, 1, 'yes'],
+    [1, 0, 'no'],
+    [0, 1, 'no'],
+    [0, 1, 'no'],
+]
+'''
 
+# 计算给定数据集的香农熵
+# 思路是先统计每个label出现的次数，算出概率，然后按照香浓熵公式计算。
 def calc_shannon_ent(data_set):
-    """计算给定数据集的香农熵"""
+    # 数据集长度
     num_entries = len(data_set)
+    # 用于统计每个label的个数
     label_counts = {}
     # feat_vec 特征向量
     for feat_vec in data_set:
@@ -15,6 +27,7 @@ def calc_shannon_ent(data_set):
         if current_label not in label_counts.keys():
             label_counts[current_label] = 0
         label_counts[current_label] += 1
+
     shannon_ent = 0.0
     for key in label_counts:
         # prob 分类概率
@@ -22,8 +35,8 @@ def calc_shannon_ent(data_set):
         shannon_ent -= prob * log(prob, 2)
     return shannon_ent
 
+# 创造测试的数据集和分类
 def create_date_set():
-    """创造测试的数据集和分类"""
     data_set = [
         # [1, 1, 'maybe'],  #[feature1, feature2, class]
         [1, 1, 'yes'],
@@ -32,11 +45,11 @@ def create_date_set():
         [0, 1, 'no'],
         [0, 1, 'no'],
     ]
-    labels = ['no surfacing', 'flippers']
+    labels = ['no surfacing', 'flippers']     # filppers 是 脚蹼的意思
     return data_set, labels
 
+# 按照给定特征划分数据集
 def split_data_set(data_set, axis, value):
-    """按照给定特征划分数据集"""
     ret_data_set = []
     for feat_vec in data_set:
         if feat_vec[axis] == value:
@@ -45,8 +58,8 @@ def split_data_set(data_set, axis, value):
             ret_data_set.append(reduced_feat_vec)
     return ret_data_set
 
+# 选择最好的数据集划分方式
 def choose_best_feature_to_split(data_set):
-    """选择最好的数据集划分方式"""
     num_features = len(data_set[0]) - 1
     base_entropy = calc_shannon_ent(data_set)
     best_info_gain, best_feature = 0.0, -1
