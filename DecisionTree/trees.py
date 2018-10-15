@@ -10,7 +10,9 @@ dataset = [
     [1, 1, 'yes'],
     [1, 0, 'no'],
     [0, 1, 'no'],
-    [0, 1, 'no'],
+    [0, 1, 'nn'],
+    [0, 1, 'nx'],
+    [0, 1, 'gg'],
 ]
 '''
 
@@ -44,6 +46,9 @@ def create_date_set():
         [1, 0, 'no'],
         [0, 1, 'no'],
         [0, 1, 'no'],
+        [0, 1, 'nn'],
+        [0, 1, 'nx'],
+        [0, 1, 'gg'],
     ]
     labels = ['no surfacing', 'flippers']     # filppers 是 脚蹼的意思
     return data_set, labels
@@ -79,6 +84,7 @@ def choose_best_feature_to_split(data_set):
             best_feature = i
     return best_feature
 
+'''
 test_data_set, test_labels = create_date_set()
 print(test_data_set)
 entropy = calc_shannon_ent(test_data_set)
@@ -88,3 +94,9 @@ print(split_data_set(test_data_set, 0, 0))
 
 # 计算第几个特征为最佳特征值
 print(choose_best_feature_to_split(test_data_set))
+'''
+
+if __name__ == '__main__':
+    dataset, _ = create_date_set()
+    shannon_ent = calc_shannon_ent(dataset)
+    print("香浓熵：", shannon_ent)
