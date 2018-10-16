@@ -64,6 +64,7 @@ def split_data_set(data_set, axis, value):
     return ret_data_set
 
 # 选择最好的数据集划分方式
+# 逻辑是： 分别计算按照每一个特征【label】划分后的数据集的信息熵，选出信息熵最小的对应特征
 def choose_best_feature_to_split(data_set):
     num_features = len(data_set[0]) - 1
     base_entropy = calc_shannon_ent(data_set)
@@ -76,13 +77,46 @@ def choose_best_feature_to_split(data_set):
         for value in unique_vals:
             sub_data_set = split_data_set(data_set, i, value)
             prob = len(sub_data_set) / float(len(data_set))
-            # 这步没想明白
+            # 子数据集站总数据集概率*子数据集香浓熵 求和
             new_entropy += prob * calc_shannon_ent(sub_data_set)
         info_gain = base_entropy - new_entropy
         if info_gain > best_info_gain:
             best_info_gain = info_gain
             best_feature = i
     return best_feature
+
+
+# 当数据集已经处理了所有label，但是class 仍然不是唯一的，就只有按照概率高的来分类了
+# ["yes", "no", "yes"] 以概率高德为分类标准
+def majority_cnt(class_list):
+    class_count = {}
+    for vote in class_list:
+        if vote not in class_count.keys():
+            class_count[vote] = 0
+        class_count[vote] += 1
+    # 按照维度为1排序，降序
+    sorted_class_count = sorted(class_count.items(), key=operator.itemgetter(1), reverse=True)
+    # print(sorted_class_count)
+    return sorted_class_count[0][0]
+
+# 递归创建决策树：就是一个嵌套字典
+def create_tree(data_set, labels):
+    class_list = [example[-1] for example in data_set]
+    if class_list.count(class_list[0]) == len(data_set):
+        return class_list[0]
+    if len(data_set[0]) == 1:
+        return majority_cnt(class_list)
+    best_feat = choose_best_feature_to_split(data_set)
+    best_label = labels[best_feat]
+    del(labels[best_feat])
+    my_trees = {best_label: {}}
+    feat_value = [e[best_feat] for e in data_set]
+    uniq_val = set(feat_value)
+    for v in uniq_val:
+        sublabels = labels[:]
+        my_trees[best_label][v] = create_tree(split_data_set(data_set, best_feat, v), sublabels)
+    return my_trees
+
 
 '''
 test_data_set, test_labels = create_date_set()
