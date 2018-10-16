@@ -10,9 +10,8 @@ dataset = [
     [1, 1, 'yes'],
     [1, 0, 'no'],
     [0, 1, 'no'],
-    [0, 1, 'nn'],
-    [0, 1, 'nx'],
-    [0, 1, 'gg'],
+    [0, 1, 'yes'],
+    [0, 1, 'no],
 ]
 '''
 
@@ -46,9 +45,9 @@ def create_date_set():
         [1, 0, 'no'],
         [0, 1, 'no'],
         [0, 1, 'no'],
-        [0, 1, 'nn'],
-        [0, 1, 'nx'],
-        [0, 1, 'gg'],
+        # [0, 1, 'nn'],
+        # [0, 1, 'nx'],
+        # [0, 1, 'gg'],
     ]
     labels = ['no surfacing', 'flippers']     # filppers 是 脚蹼的意思
     return data_set, labels
@@ -131,6 +130,9 @@ print(choose_best_feature_to_split(test_data_set))
 '''
 
 if __name__ == '__main__':
-    dataset, _ = create_date_set()
+    dataset, labels = create_date_set()
     shannon_ent = calc_shannon_ent(dataset)
     print("香浓熵：", shannon_ent)
+
+    tree = create_tree(dataset, labels)
+    print(tree)
