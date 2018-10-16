@@ -17,6 +17,8 @@ dataset = [
 
 # 计算给定数据集的香农熵
 # 思路是先统计每个label出现的次数，算出概率，然后按照香浓熵公式计算。
+
+
 def calc_shannon_ent(data_set):
     # 数据集长度
     num_entries = len(data_set)
@@ -37,6 +39,8 @@ def calc_shannon_ent(data_set):
     return shannon_ent
 
 # 创造测试的数据集和分类
+
+
 def create_date_set():
     data_set = [
         # [1, 1, 'maybe'],  #[feature1, feature2, class]
@@ -53,6 +57,8 @@ def create_date_set():
     return data_set, labels
 
 # 按照给定特征划分数据集
+
+
 def split_data_set(data_set, axis, value):
     ret_data_set = []
     for feat_vec in data_set:
@@ -64,6 +70,8 @@ def split_data_set(data_set, axis, value):
 
 # 选择最好的数据集划分方式
 # 逻辑是： 分别计算按照每一个特征【label】划分后的数据集的信息熵，选出信息熵最小的对应特征
+
+
 def choose_best_feature_to_split(data_set):
     num_features = len(data_set[0]) - 1
     base_entropy = calc_shannon_ent(data_set)
@@ -94,11 +102,14 @@ def majority_cnt(class_list):
             class_count[vote] = 0
         class_count[vote] += 1
     # 按照维度为1排序，降序
-    sorted_class_count = sorted(class_count.items(), key=operator.itemgetter(1), reverse=True)
+    sorted_class_count = sorted(
+        class_count.items(), key=operator.itemgetter(1), reverse=True)
     # print(sorted_class_count)
     return sorted_class_count[0][0]
 
 # 递归创建决策树：就是一个嵌套字典
+
+
 def create_tree(data_set, labels):
     class_list = [example[-1] for example in data_set]
     if class_list.count(class_list[0]) == len(data_set):
@@ -113,7 +124,8 @@ def create_tree(data_set, labels):
     uniq_val = set(feat_value)
     for v in uniq_val:
         sublabels = labels[:]
-        my_trees[best_label][v] = create_tree(split_data_set(data_set, best_feat, v), sublabels)
+        my_trees[best_label][v] = create_tree(
+            split_data_set(data_set, best_feat, v), sublabels)
     return my_trees
 
 
@@ -136,3 +148,8 @@ if __name__ == '__main__':
 
     tree = create_tree(dataset, labels)
     print(tree)
+
+    from tree_show import get_tree_depth, get_num_leafs
+
+    print(get_num_leafs(tree))
+    print(get_tree_depth(tree))

@@ -24,5 +24,32 @@ def create_plot():
     plt.show()
 
 
+# 递归获取叶节点的数目
+def get_num_leafs(my_tree):
+    num_leafs = 0
+    first_str = list(my_tree.keys())[0]
+    second_dict = my_tree[first_str]
+    for k in second_dict.keys():
+        if type(second_dict[k]).__name__ == 'dict':
+            num_leafs += get_num_leafs(second_dict[k])
+        else:
+            num_leafs += 1
+    return num_leafs
+
+
+# 递归获树的最大层数
+def get_tree_depth(my_tree):
+    max_depth = 0
+    first_str = list(my_tree.keys())[0]
+    second_dict = my_tree[first_str]
+    for k in second_dict.keys():
+        if type(second_dict[k]).__name__ == 'dict':
+            this_depth = 1 + get_tree_depth(second_dict[k])
+        else:
+            this_depth = 1
+    max_depth = max_depth if max_depth > this_depth else this_depth
+    return max_depth
+
+
 if __name__ == "__main__":
     create_plot()
