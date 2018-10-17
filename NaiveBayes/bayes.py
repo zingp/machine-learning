@@ -34,9 +34,9 @@ def setOfWords2Vec(vocabList, inputSet):
 
 
 def trainNB0(trainMatrix, trainCategory):
-    numTrainDocs = len(trainMatrix)
-    numWords = len(trainMatrix[0])
-    pAbusive = sum(trainCategory)/float(numTrainDocs)
+    numTrainDocs = len(trainMatrix)     # 评论条数
+    numWords = len(trainMatrix[0])      # 总词汇量
+    pAbusive = sum(trainCategory)/float(numTrainDocs)     # 整个文档出现侮辱性评论的概率
     # p0Num = np.ones(numWords)
     # p1Num = np.ones(numWords)  # change to ones()
     # p0Denom = 2.0
@@ -50,14 +50,14 @@ def trainNB0(trainMatrix, trainCategory):
         if trainCategory[i] == 1:
             p1Num += trainMatrix[i]
             p1Denom += sum(trainMatrix[i])
-            print("p1", p1Denom)
+            print("p1", p1Num)
         else:
             p0Num += trainMatrix[i]
             p0Denom += sum(trainMatrix[i])
             print("p0", p0Denom)
     # p1Vect = np.log(p1Num/p1Denom)  # change to log()
     # p0Vect = np.log(p0Num/p0Denom)  # change to log()
-    p1Vect = p1Num/p1Denom  # change to log()
+    p1Vect = p1Num/p1Denom  # change to log()    # 文档中是1情况下，该条评论中出现每个单词的概率（有的单词没出现则为0）
     p0Vect = p0Num/p0Denom  # change to log()
     return p0Vect, p1Vect, pAbusive
 
@@ -71,7 +71,7 @@ if __name__ == '__main__':
     train_mat = []
     for post_doc in list_posts:
         train_mat.append(setOfWords2Vec(my_vec_list, post_doc))
-    print("trainmat::", len(train_mat[0]))
+    print("trainmat::", train_mat[0])
 
     p0v, p1v, pab = trainNB0(train_mat, list_class)
     print(p0v)
