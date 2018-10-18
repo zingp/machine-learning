@@ -37,43 +37,57 @@ def trainNB0(trainMatrix, trainCategory):
     numTrainDocs = len(trainMatrix)     # 评论条数
     numWords = len(trainMatrix[0])      # 总词汇量
     pAbusive = sum(trainCategory)/float(numTrainDocs)     # 整个文档出现侮辱性评论的概率
-    # p0Num = np.ones(numWords)
-    # p1Num = np.ones(numWords)  # change to ones()
-    # p0Denom = 2.0
-    # p1Denom = 2.0  # change to 2.0
-    p0Num = np.zeros(numWords)
-    p1Num = np.zeros(numWords)  # change to ones()
-    p0Denom = 0.0
-    p1Denom = 0.0  # change to 2.0
+    p0Num = np.ones(numWords)
+    p1Num = np.ones(numWords)  # change to ones()
+    p0Denom = 2.0
+    p1Denom = 2.0  # change to 2.0
+    # p0Num = np.zeros(numWords)
+    # p1Num = np.zeros(numWords)  # change to ones()
+    # p0Denom = 0.0
+    # p1Denom = 0.0  # change to 2.0
     for i in range(numTrainDocs):
-        print(trainCategory[i], i)
         if trainCategory[i] == 1:
             p1Num += trainMatrix[i]
             p1Denom += sum(trainMatrix[i])
-            print("p1", p1Num)
         else:
             p0Num += trainMatrix[i]
             p0Denom += sum(trainMatrix[i])
-            print("p0", p0Denom)
-    # p1Vect = np.log(p1Num/p1Denom)  # change to log()
-    # p0Vect = np.log(p0Num/p0Denom)  # change to log()
-    p1Vect = p1Num/p1Denom  # change to log()    # 文档中是1情况下，该条评论中出现每个单词的概率（有的单词没出现则为0）
-    p0Vect = p0Num/p0Denom  # change to log()
+    p1Vect = np.log(p1Num/p1Denom)  # change to log()
+    p0Vect = np.log(p0Num/p0Denom)  # change to log()
+    # p1Vect = p1Num/p1Denom  # change to log()    # 给定评论是1情况下，该条评论中出现词汇表中单词的概率（有的单词没出现则为0）
+    # p0Vect = p0Num/p0Denom  # change to log()    # 概率有一个为0，乘积均为0，所以转换为log
     return p0Vect, p1Vect, pAbusive
 
 
-if __name__ == '__main__':
+# 比较概率大小，返回概率大的类别
+def classify_bayes(vec2classify, p0vec, p1vec, pclass1):
+    p1 = sum(vec2classify * p1vec) + np.log(pclass1)
+    p0 = sum(vec2classify * p0vec) + np.log(1-pclass1)
+    if p1 > p0:
+        return 1
+    else:
+        return 0
+
+
+# 测试函数
+def testing_bayes():
     list_posts, list_class = loadDataSet()
-    # print("list_posts:", list_posts)
-    print("list_class:", list_class)
     my_vec_list = createVocabList(list_posts)
-    # print("vec_list:", my_vec_list)
     train_mat = []
     for post_doc in list_posts:
         train_mat.append(setOfWords2Vec(my_vec_list, post_doc))
-    print("trainmat::", train_mat[0])
-
     p0v, p1v, pab = trainNB0(train_mat, list_class)
-    print(p0v)
-    print(p1v)
-    print(pab)
+
+    test_list = ['love', 'my', 'dalmation']
+    doc_set_vec = np.array(setOfWords2Vec(my_vec_list, test_list))
+    print(test_list, "classified as:",
+          classify_bayes(doc_set_vec, p0v, p1v, pab))
+    test_list = ['stupid', 'garbage', 'dalmation']
+    doc_set_vec = np.array(setOfWords2Vec(my_vec_list, test_list))
+    print(test_list, "classified as:",
+          classify_bayes(doc_set_vec, p0v, p1v, pab))
+
+
+if __name__ == '__main__':
+
+    testing_bayes()
