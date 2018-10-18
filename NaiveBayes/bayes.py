@@ -22,12 +22,24 @@ def createVocabList(dataSet):
     return list(vocabSet)
 
 
-# 出现单词标注为1
+# 词集模型 ：出现单词标注为1
 def setOfWords2Vec(vocabList, inputSet):
     returnVec = [0]*len(vocabList)
     for word in inputSet:
         if word in vocabList:
             returnVec[vocabList.index(word)] = 1
+        else:
+            print("the word: %s is not in my Vocabulary!" % word)
+    return returnVec
+
+# 词袋模型：每出现一次单词+1
+
+
+def bagOfWords2Vec(vocabList, inputSet):
+    returnVec = [0]*len(vocabList)
+    for word in inputSet:
+        if word in vocabList:
+            returnVec[vocabList.index(word)] += 1
         else:
             print("the word: %s is not in my Vocabulary!" % word)
     return returnVec
