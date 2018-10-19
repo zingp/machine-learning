@@ -32,9 +32,8 @@ def setOfWords2Vec(vocabList, inputSet):
             print("the word: %s is not in my Vocabulary!" % word)
     return returnVec
 
+
 # 词袋模型：每出现一次单词+1
-
-
 def bagOfWords2Vec(vocabList, inputSet):
     returnVec = [0]*len(vocabList)
     for word in inputSet:
