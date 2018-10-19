@@ -19,7 +19,6 @@ def txt_parse(txt):
 
 def word_list(name):
     word_vecs = []
-    word_lists = []
     for i in range(1, 26):
         filename = os.path.join(base_dir, "email", name, "{}.txt".format(i))
         with open(filename, "r") as f:
