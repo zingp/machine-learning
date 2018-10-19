@@ -25,13 +25,12 @@ def word_list(name):
         with open(filename, "r") as f:
             content = txt_parse(f.read())
             word_vecs.append(content)
-            word_lists.extend(content)
-    return word_vecs, word_lists
+    return word_vecs
 
 
 def test_email_bayes():
-    ham_vec, ham_list = word_list("ham")
-    spam_vec, spam_list = word_list("spam")
+    ham_vec = word_list("ham")
+    spam_vec = word_list("spam")
     dataset = ham_vec + spam_vec
     label_list = [1]*25 + [0]*25
     print("-" * 100)
@@ -59,9 +58,12 @@ def test_email_bayes():
         if this_class != rand_lebel[i]:
             error_num += 1
             print(rand_dataset[i])
-    print("error_rate:", error_num / len(rand_dataset))
+    return error_num / len(rand_dataset)
 
 
 if __name__ == "__main__":
-    test_email_bayes()
+    sum_error_rate = 0
+    for i in range(10):
+        sum_error_rate += test_email_bayes()
+    print("rvg_error_rate:", sum_error_rate / 10)
     # 多运行几次求平均 5%
