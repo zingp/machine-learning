@@ -14,3 +14,8 @@ def clac_most_freq(vocab_list, fulltext):
         freq_dic[tocken] = fulltext.count(tocken)
     sorted_freq = sorted(freq_dic.items(), key=operator.itemgetter(1), reverse=True)
     return sorted_freq[:30]
+
+def local_words(feed1, feed0):
+    import feedparser
+    doc_list, class_list, full_text = [], [], []
+    
