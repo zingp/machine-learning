@@ -24,10 +24,12 @@ def gradAscent(dataMatIn, classLabels):
     print(m, n)
     alpha = 0.001
     maxCycles = 500
-    weights = ones((n, 1))
-    # 这几部没看懂啊
+    weights = ones((n, 1))   # 3row 1 clo
+    print("first weghts:", weights)
+    # 这几步没看懂啊
     for k in range(maxCycles):  # 矩阵运算
         print("K", k)
+        # 矩阵相乘 就是通过一系列变换 得到另一个向量
         h = sigmoid(dataMatrix*weights)  # matrix mult
         print("h:", h)
         error = (labelMat - h)  # vector subtraction
