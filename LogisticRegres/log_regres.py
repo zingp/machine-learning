@@ -25,11 +25,16 @@ def gradAscent(dataMatIn, classLabels):
     alpha = 0.001
     maxCycles = 500
     weights = ones((n, 1))
-    # 这几部没看懂
+    # 这几部没看懂啊
     for k in range(maxCycles):  # 矩阵运算
+        print("K", k)
         h = sigmoid(dataMatrix*weights)  # matrix mult
+        print("h:", h)
         error = (labelMat - h)  # vector subtraction
+        print("error:", error)
         weights = weights + alpha * dataMatrix.transpose() * error  # matrix mult
+        print("weight:", weights)
+        input("niubi....")
     return weights
 
 
