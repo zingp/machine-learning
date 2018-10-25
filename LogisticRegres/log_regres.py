@@ -21,22 +21,15 @@ def gradAscent(dataMatIn, classLabels):
     dataMatrix = mat(dataMatIn)  # 转换为numpy矩阵
     labelMat = mat(classLabels).transpose()  # 转换为numpy矩阵,列向量
     m, n = shape(dataMatrix)    # 100行 3列
-    print(m, n)
     alpha = 0.001
     maxCycles = 500
     weights = ones((n, 1))   # 3row 1 clo
-    print("first weghts:", weights)
     # 这几步没看懂啊
     for k in range(maxCycles):  # 矩阵运算
-        print("K", k)
         # 矩阵相乘 就是通过一系列变换 得到另一个向量
         h = sigmoid(dataMatrix*weights)  # matrix mult
-        print("h:", h)
         error = (labelMat - h)  # vector subtraction
-        print("error:", error)
         weights = weights + alpha * dataMatrix.transpose() * error  # matrix mult
-        print("weight:", weights)
-        input("niubi....")
     return weights
 
 
