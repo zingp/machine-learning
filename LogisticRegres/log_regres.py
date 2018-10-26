@@ -1,4 +1,5 @@
 from numpy import *
+import random
 
 
 # 创建数据集 [[1.0, -0.017612, 14.053064],]  [0, 1, ...]
@@ -59,6 +60,34 @@ def plotBestFit(weights):
     plt.xlabel('X1')
     plt.ylabel('X2')
     plt.show()
+
+
+def stocGradAscent0(dataMatrix, classLabels):
+    m, n = shape(dataMatrix)
+    alpha = 0.01
+    weights = ones(n)  # initialize to all ones
+    for i in range(m):
+        h = sigmoid(sum(dataMatrix[i]*weights))
+        error = classLabels[i] - h
+        weights = weights + alpha * error * dataMatrix[i]
+    return weights
+
+
+def stocGradAscent1(dataMatrix, classLabels, numIter=150):
+    m, n = shape(dataMatrix)
+    weights = ones(n)  # initialize to all ones
+    for j in range(numIter):
+        dataIndex = range(m)
+        for i in range(m):
+            # apha decreases with iteration, does not
+            alpha = 4/(1.0+j+i)+0.0001
+            # go to 0 because of the constant
+            randIndex = int(random.uniform(0, len(dataIndex)))
+            h = sigmoid(sum(dataMatrix[randIndex]*weights))
+            error = classLabels[randIndex] - h
+            weights = weights + alpha * error * dataMatrix[randIndex]
+            del(dataIndex[randIndex])
+    return weights
 
 
 if __name__ == '__main__':
