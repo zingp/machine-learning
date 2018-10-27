@@ -73,6 +73,7 @@ def stocGradAscent0(dataMatrix, classLabels):
     return weights
 
 
+# 可以
 def stocGradAscent1(dataMatrix, classLabels, numIter=150):
     m, n = shape(dataMatrix)
     weights = ones(n)  # initialize to all ones
@@ -93,4 +94,4 @@ def stocGradAscent1(dataMatrix, classLabels, numIter=150):
 if __name__ == '__main__':
     data_set, label_mat = loadDataSet()
     w = gradAscent(data_set, label_mat)
-    plotBestFit(w.getA())
+    plotBestFit(w.getA()) 
