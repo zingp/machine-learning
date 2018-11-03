@@ -25,7 +25,6 @@ def gradAscent(dataMatIn, classLabels):
     alpha = 0.001
     maxCycles = 500
     weights = ones((n, 1))   # 3row 1 clo
-    # 这几步没看懂啊
     for k in range(maxCycles):  # 矩阵运算
         # 矩阵相乘 就是通过一系列变换 得到另一个向量
         h = sigmoid(dataMatrix*weights)  # matrix mult
@@ -73,6 +72,7 @@ def stocGradAscent0(dataMatrix, classLabels):
     return weights
 
 
+# 可以
 def stocGradAscent1(dataMatrix, classLabels, numIter=150):
     m, n = shape(dataMatrix)
     weights = ones(n)  # initialize to all ones
@@ -93,4 +93,4 @@ def stocGradAscent1(dataMatrix, classLabels, numIter=150):
 if __name__ == '__main__':
     data_set, label_mat = loadDataSet()
     w = gradAscent(data_set, label_mat)
-    plotBestFit(w.getA())
+    plotBestFit(w.getA()) 
