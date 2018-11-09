@@ -17,6 +17,8 @@ def loadDataSet():
 def sigmoid(inX):
     return 1.0/(1+exp(-inX))
 
+# 梯度下降的线性代数解法不太好理解
+
 
 def gradAscent(dataMatIn, classLabels):
     dataMatrix = mat(dataMatIn)  # 转换为numpy矩阵
@@ -93,4 +95,5 @@ def stocGradAscent1(dataMatrix, classLabels, numIter=150):
 if __name__ == '__main__':
     data_set, label_mat = loadDataSet()
     w = gradAscent(data_set, label_mat)
-    plotBestFit(w.getA()) 
+    print(len(w), len(w.getA()))
+    plotBestFit(w.getA())
