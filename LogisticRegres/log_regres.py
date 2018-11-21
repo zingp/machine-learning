@@ -17,9 +17,8 @@ def loadDataSet():
 def sigmoid(inX):
     return 1.0/(1+exp(-inX))
 
+
 # 梯度下降的线性代数解法不太好理解
-
-
 def gradAscent(dataMatIn, classLabels):
     dataMatrix = mat(dataMatIn)  # 转换为numpy矩阵
     labelMat = mat(classLabels).transpose()  # 转换为numpy矩阵,列向量
@@ -85,6 +84,7 @@ def stocGradAscent1(dataMatrix, classLabels, numIter=150):
             alpha = 4/(1.0+j+i)+0.0001
             # go to 0 because of the constant
             randIndex = int(random.uniform(0, len(dataIndex)))
+            # 这一步有严格推导参见：https://blog.csdn.net/ligang_csdn/article/details/53838743
             h = sigmoid(sum(dataMatrix[randIndex]*weights))
             error = classLabels[randIndex] - h
             weights = weights + alpha * error * dataMatrix[randIndex]
