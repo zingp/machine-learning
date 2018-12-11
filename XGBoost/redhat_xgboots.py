@@ -180,7 +180,7 @@ def create_submission(score, test, prediction):
 
 def gene_submission(test, features, model_name):
     gbm = xgb.Booster(model_file=model_name)
-    score = '0.98'
+    score = '0.99'
     test_prediction = gbm.predict(xgb.DMatrix(test[features]))
     create_submission(score, test, test_prediction)
 
