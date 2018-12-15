@@ -3,16 +3,16 @@ from time import sleep
 import random
 
 
-def loadDataSet(fileName):
-    dataMat = []
-    labelMat = []
-    fr = open(fileName)
+def load_data_set(filename):
+    data_mat = []
+    label_mat = []
+    fr = open(filename)
     for line in fr.readlines():
-        lineArr = line.strip().split('\t')
-        dataMat.append([float(lineArr[0]), float(lineArr[1])])
-        labelMat.append(float(lineArr[2]))
+        line_arr = line.strip().split('\t')
+        data_mat.append([float(linea_rr[0]), float(line_arr[1])])
+        label_mat.append(float(line_arr[2]))
     fr.close()
-    return dataMat, labelMat
+    return data_mat, label_mat
 
 
 def selectJrand(i, m):
@@ -95,9 +95,10 @@ def smoSimple(dataMatIn, classLabels, C, toler, maxIter):
 
 
 if __name__ == '__main__':
-    data_arr, label_arr = loadDataSet('testSet.txt')
-    b, al = smoSimple(data_arr, label_arr, 0.6, 0.001, 40)
-    print(b)
+    data_arr, label_arr = load_data_set('testSet.txt')
+    print(data_arr, label_arr)
+    # b, al = smoSimple(data_arr, label_arr, 0.6, 0.001, 40)
+    # print(b)
     for i in range(100):
         if al[i] > 0:
             print("alpha:", al[i])
