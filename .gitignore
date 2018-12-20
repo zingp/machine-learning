@@ -115,3 +115,7 @@ dmypy.jsoni
 
 # picture
 *.png
+
+# data file
+*.csv
+*.DS_Store
