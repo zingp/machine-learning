@@ -4,6 +4,7 @@
 # Date: 2017/11/15
 
 from math import log
+import operator
 # 首先明确data_set的数据结构
 '''
 dataset = [
