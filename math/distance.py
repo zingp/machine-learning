@@ -2,17 +2,21 @@
 import numpy as np
 
 
-# L1
+# L1距离
 def l1dt(vec1, vec2):
     v1 = np.mat(vec1)
     v2 = np.mat(vec2)
     return np.sum(abs(v1-v2))
 
+
+# L2距离
 def l2dt(vec1, vec2):
     v1 = np.mat(vec1)
     v2 = np.mat(vec2)
     return np.sqrt((v1-v2)*(v1-v2).T)
 
+
+## 余弦相似度
 def cosdt(vec1, vec2):
     v1 = np.mat(vec1)
     v2 = np.mat(vec2)
