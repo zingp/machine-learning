@@ -119,3 +119,8 @@ dmypy.jsoni
 # data file
 *.csv
 *.DS_Store
+
+# models
+*.pt
+*ubyte.gz
+*ubyte
