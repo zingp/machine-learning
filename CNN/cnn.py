@@ -133,6 +133,74 @@ class AlexNet(nn.Module):
         x = self.class_block(x)
         return x
 
+class VGGBlock(nn.Module):
+    def __init__(self,in_channels,out_channels,batch_norm):#在后来改良后的VGG网络增加了BatchNorm
+        super(VGGBlock,self).__init__()
+        stack=[]
+        stack.append(nn.Conv2d(in_channels,out_channels,kernel_size=3,padding=1))
+        if batch_norm:
+            stack.append(nn.BatchNorm2d(out_channels))
+        stack.append(nn.ReLU(inplace=True))
+        self.model_block=nn.Sequential(*stack)
+    def forward(self,x):
+        return self.model_block(x)
+
+class VGGNet11(nn.Module):
+    def __init__(self,block,pool,batch_norm):#block是一个网络模组抽象，pool也是pooling层的抽象
+        super(VGGNet11,self).__init__()
+        self.feature_block=nn.Sequential(
+            block(1,64,batch_norm), #32*32
+            pool(kernel_size=2,stride=2),#16*16
+            block(64,128,batch_norm),
+            pool(kernel_size=2,stride=2),#8*8
+            block(128,256,batch_norm),
+            block(256,256,batch_norm),
+            pool(kernel_size=2,stride=2),#4*4
+            block(256,512,batch_norm),
+            block(512,512,batch_norm),
+            pool(kernel_size=2,stride=2),#2*2
+            block(512,512,batch_norm),
+            block(512,512,batch_norm),
+            pool(kernel_size=2,stride=2),#1*1
+        )
+        self.classifier=nn.Linear(512,10)
+        
+    def forward(self,x):
+        x=self.feature_block(x)
+        x=x.view(x.shape[0],-1)
+        x=self.classifier(x)
+        return x
+
+class VGGNet16(nn.Module):
+    def __init__(self,block,pool,batch_norm):#block是一个网络模组抽象，pool也是pooling层的抽象
+        super(VGGNet16,self).__init__()
+        self.feature_block=nn.Sequential(
+            block(1,64,batch_norm), #32*32
+            block(64,64,batch_norm), #32*32
+            pool(kernel_size=2,stride=2),#16*16
+            block(64,128,batch_norm),
+            block(128,128,batch_norm),
+            pool(kernel_size=2,stride=2),#8*8
+            block(128,256,batch_norm),
+            block(256,256,batch_norm),
+            pool(kernel_size=2,stride=2),#4*4
+            block(256,512,batch_norm),
+            block(512,512,batch_norm),
+            block(512,512,batch_norm),
+            pool(kernel_size=2,stride=2),#2*2
+            block(512,512,batch_norm),
+            block(512,512,batch_norm),
+            block(512,512,batch_norm),
+            pool(kernel_size=2,stride=2),#1*1
+        )
+        self.classifier=nn.Linear(512,10)
+        
+    def forward(self,x):
+        x=self.feature_block(x)
+        x=x.view(x.shape[0],-1)
+        x=self.classifier(x)
+        return x
+
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu:0')
 
 device
