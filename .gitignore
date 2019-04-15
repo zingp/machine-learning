@@ -125,3 +125,4 @@ data/
 *.pt
 *ubyte.gz
 *ubyte
+*.model
